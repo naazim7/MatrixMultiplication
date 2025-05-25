@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Matrix Result</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #8360c3, #2ebf91);
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      color: #fff;
+    }
+
+    .wrapper {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(14px);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 800px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 30px;
+      color: #fff;
+    }
+
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      font-size: 18px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    td {
+      padding: 14px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Resulting Matrix</h1>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const matrixA = JSON.parse(localStorage.getItem("matrixA"));
+    const matrixB = JSON.parse(localStorage.getItem("matrixB"));
+
+    const rowsA = matrixA.length;
+    const colsA = matrixA[0].length;
+    const colsB = matrixB[0].length;
+
+    const result = [];
+
+    for (let i = 0; i < rowsA; i++) {
+      result[i] = [];
+      for (let j = 0; j < colsB; j++) {
+        let sum = 0;
+        for (let k = 0; k < colsA; k++) {
+          sum += matrixA[i][k] * matrixB[k][j];
+        }
+        result[i][j] = sum;
+      }
+    }
+
+    const table = document.createElement("table");
+    result.forEach(row => {
+      const tr = document.createElement("tr");
+      row.forEach(cell => {
+        const td = document.createElement("td");
+        td.innerText = cell;
+        tr.appendChild(td);
+      });
+      table.appendChild(tr);
+    });
+
+    document.getElementById("result").appendChild(table);
+  </script>
+</body>
+</html>

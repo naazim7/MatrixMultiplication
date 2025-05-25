@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Matrix Input</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      min-height: 100vh;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      color: #fff;
+    }
+
+    .wrapper {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(14px);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 900px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .matrix-container {
+      margin-bottom: 40px;
+    }
+
+    .matrix {
+      display: grid;
+      gap: 10px;
+      justify-content: center;
+      padding: 10px 0;
+    }
+
+    input[type="number"] {
+      width: 60px;
+      height: 40px;
+      padding: 8px;
+      text-align: center;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      background-color: #ffffff;
+      color: #333;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    button {
+      display: block;
+      margin: 0 auto;
+      padding: 14px 40px;
+      font-size: 16px;
+      font-weight: 600;
+      background-color: #00ffb2;
+      color: #0b0b0b;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #00e6a3;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Enter Matrix Values</h1>
+    <form id="matrixForm">
+      <div class="matrix-container">
+        <h2>Matrix A</h2>
+        <div id="matrixA" class="matrix"></div>
+      </div>
+      <div class="matrix-container">
+        <h2>Matrix B</h2>
+        <div id="matrixB" class="matrix"></div>
+      </div>
+      <button type="submit">Calculate</button>
+    </form>
+  </div>
+
+  <script>
+    const rowsA = parseInt(localStorage.getItem("rowsA"));
+    const colsA = parseInt(localStorage.getItem("colsA"));
+    const colsB = parseInt(localStorage.getItem("colsB"));
+
+    const matrixA = document.getElementById("matrixA");
+    const matrixB = document.getElementById("matrixB");
+
+    matrixA.style.gridTemplateColumns = `repeat(${colsA}, auto)`;
+    matrixB.style.gridTemplateColumns = `repeat(${colsB}, auto)`;
+
+    for (let i = 0; i < rowsA; i++) {
+      for (let j = 0; j < colsA; j++) {
+        const input = document.createElement("input");
+        input.type = "number";
+        input.name = `a-${i}-${j}`;
+        input.required = true;
+        matrixA.appendChild(input);
+      }
+    }
+
+    for (let i = 0; i < colsA; i++) {
+      for (let j = 0; j < colsB; j++) {
+        const input = document.createElement("input");
+        input.type = "number";
+        input.name = `b-${i}-${j}`;
+        input.required = true;
+        matrixB.appendChild(input);
+      }
+    }
+
+    document.getElementById("matrixForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+
+      const matrixA = [];
+      const matrixB = [];
+
+      for (let i = 0; i < rowsA; i++) {
+        matrixA[i] = [];
+        for (let j = 0; j < colsA; j++) {
+          matrixA[i][j] = parseFloat(formData.get(`a-${i}-${j}`));
+        }
+      }
+
+      for (let i = 0; i < colsA; i++) {
+        matrixB[i] = [];
+        for (let j = 0; j < colsB; j++) {
+          matrixB[i][j] = parseFloat(formData.get(`b-${i}-${j}`));
+        }
+      }
+
+      localStorage.setItem("matrixA", JSON.stringify(matrixA));
+      localStorage.setItem("matrixB", JSON.stringify(matrixB));
+      window.location.href = "matrix-result.html";
+    });
+  </script>
+</body>
+</html>
